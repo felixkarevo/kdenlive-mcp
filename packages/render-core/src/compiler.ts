@@ -610,17 +610,16 @@ export async function compileProject(
       lines.push(
         ...clipProducerXml(layerClip, asset, options.projectRoot, trackEffects),
       );
-      const producerIn =
-        layerClip.speed.numerator === layerClip.speed.denominator
-          ? layerClip.sourceIn
-          : 0;
+      // clipProducerXml already trims the producer to the clip's source range
+      // (in=sourceIn, out=sourceOut-1), so the entry must address it from 0.
+      // Repeating the absolute sourceIn here makes MLT seek past the trimmed
+      // out point, which renders the first frame and then freezes on the last.
       lines.push(
         ...playlistXml(
           clip.id,
           `producer-${clip.id}`,
           layerClip.timelineStart,
           clipDuration,
-          producerIn,
         ),
       );
       physicalTracks.push({
