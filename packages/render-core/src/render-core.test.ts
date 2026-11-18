@@ -1164,4 +1164,25 @@ describe('effect zones and audio track effects', () => {
     );
     expect(producer).toContain('<property name="level">-6</property>');
   });
+
+  it('addresses a trimmed clip producer from frame 0 in its playlist entry', async () => {
+    const project = fixtureProject();
+    const clip = project.tracks[0]?.clips[0];
+    if (clip === undefined) throw new Error('fixture timeline missing');
+    clip.sourceIn = 30;
+    clip.sourceOut = 60;
+    const { xml } = await compileProject(project, {
+      projectRoot: resolve('fixtures'),
+    });
+    // The producer is trimmed to the source range, so its frames are already
+    // 30..59; an entry that repeats in="30" would seek past the trimmed out
+    // point and MLT would hold the last frame for the whole clip.
+    expect(xml).toContain(
+      `<producer id="producer-${clip.id}" in="30" out="59">`,
+    );
+    expect(xml).toContain(
+      `<entry producer="producer-${clip.id}" in="0" out="29"/>`,
+    );
+    expect(xml).not.toContain(`<entry producer="producer-${clip.id}" in="30"`);
+  });
 });
