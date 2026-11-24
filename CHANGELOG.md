@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1](https://github.com/felixkarevo/kdenlive-mcp/compare/kdenlive-mcp-v1.2.0...kdenlive-mcp-v1.2.1) (2026-11-24)
+
+
+### Bug Fixes
+
+* address trimmed clip producers from frame 0 in playlist entries ([#2](https://github.com/felixkarevo/kdenlive-mcp/issues/2)) ([d2a8500](https://github.com/felixkarevo/kdenlive-mcp/commit/d2a85004652e4ea5e552e2a29803e264cca68500))
+
 ## [1.2.0](https://github.com/felixkarevo/kdenlive-mcp/compare/kdenlive-mcp-v1.1.1...kdenlive-mcp-v1.2.0) (2026-10-23)
 
 
